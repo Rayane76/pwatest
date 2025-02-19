@@ -62,8 +62,14 @@ export default function PushNotificationManager() {
 
   async function sendTestNotification() {
     if (subscription) {
-      await sendNotification(message);
       setMessage("");
+      try {
+        await sendNotification(message);
+      } catch (error) {
+        console.log(error);
+        setMessage("notification couldn't be sent");
+      }
+      setMessage("Notification has been sent !");
     }
   }
 
@@ -85,6 +91,7 @@ export default function PushNotificationManager() {
             onChange={(e) => setMessage(e.target.value)}
           />
           <button onClick={sendTestNotification}>Send Test</button>
+          {message.length > 0 && <p>{message}</p>}
         </>
       ) : (
         <>
