@@ -20,6 +20,7 @@ export default function PushNotificationManager() {
     null
   );
   const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState("");
 
   //This useEffect hook checks if the browser supports service workers and push notifications,
   //  and if so, sets isSupported to true and calls registerServiceWorker
@@ -62,14 +63,15 @@ export default function PushNotificationManager() {
 
   async function sendTestNotification() {
     if (subscription) {
-      setMessage("");
       try {
+        setSuccess("");
         await sendNotification(message);
+        setSuccess("Notification sent successfully");
       } catch (error) {
         console.log(error);
-        setMessage("notification couldn't be sent");
+        setSuccess("Notification couldn't be sent");
       }
-      setMessage("Notification has been sent !");
+      setMessage("");
     }
   }
 
@@ -91,7 +93,7 @@ export default function PushNotificationManager() {
             onChange={(e) => setMessage(e.target.value)}
           />
           <button onClick={sendTestNotification}>Send Test</button>
-          {message.length > 0 && <p>{message}</p>}
+          {success.length > 0 && <p>{success}</p>}
         </>
       ) : (
         <>
